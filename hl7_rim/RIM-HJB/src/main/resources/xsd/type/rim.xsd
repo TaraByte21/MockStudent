@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="urn:hl7-org:v3" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:hl7-org:v3"
+           elementFormDefault="qualified">
+   <xs:include schemaLocation="infrastructureRoot-r2b.xsd"/>
+   <xs:element name="access" type="Access"/>
+   <xs:complexType name="Access">
+      <xs:complexContent>
+         <xs:extension base="Role">
+            <xs:sequence>
+               <xs:element name="approachSiteCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="targetSiteCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="gaugeQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="account" type="Account"/>
+   <xs:complexType name="Account">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="balanceAmt" minOccurs="0" maxOccurs="1" type="MO"/>
+               <xs:element name="currencyCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="interestRateQuantity" minOccurs="0" maxOccurs="1" type="RTO_MO_PQ"/>
+               <xs:element name="allowedBalanceQuantity" minOccurs="0" maxOccurs="1" type="IVL_MO"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="act" type="Act"/>
+   <xs:complexType name="Act">
+      <xs:complexContent>
+         <xs:extension base="InfrastructureRoot">
+            <xs:sequence>
+               <xs:element name="id" minOccurs="0" maxOccurs="unbounded" type="II"/>
+               <xs:element name="code" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="derivationExpr" minOccurs="0" maxOccurs="1" type="ST"/>
+               <xs:element name="title" minOccurs="0" maxOccurs="1" type="ED"/>
+               <xs:element name="text" minOccurs="0" maxOccurs="1" type="ED"/>
+               <xs:element name="statusCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="effectiveTime" minOccurs="0" maxOccurs="1" type="SXCM_TS"/>
+               <xs:element name="activityTime" minOccurs="0" maxOccurs="1" type="SXCM_TS"/>
+               <xs:element name="availabilityTime" minOccurs="0" maxOccurs="1" type="TS"/>
+               <xs:element name="priorityCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="confidentialityCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="repeatNumber" minOccurs="0" maxOccurs="1" type="IVL_INT"/>
+               <xs:element name="interruptibleInd" minOccurs="0" maxOccurs="1" type="BL"/>
+               <xs:element name="levelCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="independentInd" minOccurs="0" maxOccurs="1" type="BL"/>
+               <xs:element name="uncertaintyCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="reasonCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="languageCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="participation" type="Participation" minOccurs="0" maxOccurs="unbounded"/>
+               <xs:element name="outboundRelationship" type="ActRelationship" minOccurs="0"
+                           maxOccurs="unbounded"/>
+               <xs:element name="inboundRelationship" type="ActRelationship" minOccurs="0"
+                           maxOccurs="unbounded"/>
+            </xs:sequence>
+            <!----><xs:attribute name="classCode" use="optional" type="ActClass"/>
+            <xs:attribute name="moodCode" use="optional" type="ActMood"/>
+            <xs:attribute name="actionNegationInd" use="optional" type="bl"/>
+            <xs:attribute name="negationInd" use="optional" type="bl"/>
+            <xs:attribute name="isCriterionInd" use="optional" type="bl"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="actHeir" type="ActHeir"/>
+   <xs:complexType name="ActHeir">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="actRelationship" type="ActRelationship"/>
+   <xs:complexType name="ActRelationship">
+      <xs:complexContent>
+         <xs:extension base="InfrastructureRoot">
+            <xs:sequence>
+               <xs:element name="sequenceNumber" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="priorityNumber" minOccurs="0" maxOccurs="1" type="REAL"/>
+               <xs:element name="pauseQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="checkpointCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="splitCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="joinCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="conjunctionCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="localVariableName" minOccurs="0" maxOccurs="1" type="ST"/>
+               <xs:element name="seperatableInd" minOccurs="0" maxOccurs="1" type="BL"/>
+               <xs:element name="subsetCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="uncertaintyCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="source" type="Act" minOccurs="0" maxOccurs="1"/>
+               <xs:element name="target" type="Act" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="typeCode" use="optional" type="ActRelationshipType"/>
+            <xs:attribute name="inversionInd" use="optional" type="bl"/>
+            <xs:attribute name="actAttributeContextBlockedInd" use="optional" type="bn"/>
+            <xs:attribute name="contextControlCode" use="optional" type="ContextControl"/>
+            <xs:attribute name="contextConductionInd" use="optional" type="bl"/>
+            <xs:attribute name="negationInd" use="optional" type="bl"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="container" type="Container"/>
+   <xs:complexType name="Container">
+      <xs:complexContent>
+         <xs:extension base="ManufacturedMaterial">
+            <xs:sequence>
+               <xs:element name="capacityQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="heightQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="diameterQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="capTypeCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="separatorTypeCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="barrierDeltaQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="bottomDeltaQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="contextStructure" type="ContextStructure"/>
+   <xs:complexType name="ContextStructure">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="setId" minOccurs="0" maxOccurs="1" type="II"/>
+               <xs:element name="versionNumber" minOccurs="0" maxOccurs="1" type="ST"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="device" type="Device"/>
+   <xs:complexType name="Device">
+      <xs:complexContent>
+         <xs:extension base="ManufacturedMaterial">
+            <xs:sequence>
+               <xs:element name="manufacturerModelName" minOccurs="0" maxOccurs="1" type="SC"/>
+               <xs:element name="softwareName" minOccurs="0" maxOccurs="1" type="SC"/>
+               <xs:element name="localRemoteControlStateCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="alertLevelCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="lastCalibrationTime" minOccurs="0" maxOccurs="1" type="TS"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="deviceTask" type="DeviceTask"/>
+   <xs:complexType name="DeviceTask">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="parameterValue" minOccurs="0" maxOccurs="unbounded" type="ANY"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="diagnosticImage" type="DiagnosticImage"/>
+   <xs:complexType name="DiagnosticImage">
+      <xs:complexContent>
+         <xs:extension base="Observation">
+            <xs:sequence>
+               <xs:element name="subjectOrientationCode" minOccurs="0" maxOccurs="1" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="diet" type="Diet"/>
+   <xs:complexType name="Diet">
+      <xs:complexContent>
+         <xs:extension base="Supply">
+            <xs:sequence>
+               <xs:element name="energyQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="carbohydrateQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="document" type="Document"/>
+   <xs:complexType name="Document">
+      <xs:complexContent>
+         <xs:extension base="ContextStructure">
+            <xs:sequence>
+               <xs:element name="completionCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="storageCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="copyTime" minOccurs="0" maxOccurs="1" type="TS"/>
+               <xs:element name="bibliographicDesignationText" minOccurs="0" maxOccurs="unbounded"
+                           type="ED"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="employee" type="Employee"/>
+   <xs:complexType name="Employee">
+      <xs:complexContent>
+         <xs:extension base="Role">
+            <xs:sequence>
+               <xs:element name="jobCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="jobTitleName" minOccurs="0" maxOccurs="1" type="SC"/>
+               <xs:element name="jobClassCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="occupationCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="salaryTypeCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="salaryQuantity" minOccurs="0" maxOccurs="1" type="MO"/>
+               <xs:element name="hazardExposureText" minOccurs="0" maxOccurs="1" type="ED"/>
+               <xs:element name="protectiveEquipmentText" minOccurs="0" maxOccurs="1" type="ED"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="entity" type="Entity"/>
+   <xs:complexType name="Entity">
+      <xs:complexContent>
+         <xs:extension base="InfrastructureRoot">
+            <xs:sequence>
+               <xs:element name="id" minOccurs="0" maxOccurs="unbounded" type="II"/>
+               <xs:element name="code" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="quantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="name" minOccurs="0" maxOccurs="unbounded" type="EN"/>
+               <xs:element name="desc" minOccurs="0" maxOccurs="1" type="ED"/>
+               <xs:element name="statusCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="existenceTime" minOccurs="0" maxOccurs="1" type="IVL_TS"/>
+               <xs:element name="telecom" minOccurs="0" maxOccurs="unbounded" type="TEL"/>
+               <xs:element name="riskCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="handlingCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="playedRole" type="Role" minOccurs="0" maxOccurs="unbounded"/>
+               <xs:element name="scopedRole" type="Role" minOccurs="0" maxOccurs="unbounded"/>
+               <xs:element name="languageCommunication" type="LanguageCommunication" minOccurs="0"
+                           maxOccurs="unbounded"/>
+            </xs:sequence>
+            <!----><xs:attribute name="classCode" use="optional" type="EntityClass"/>
+            <xs:attribute name="determinerCode" use="optional" type="EntityDeterminer"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="entityHeir" type="EntityHeir"/>
+   <xs:complexType name="EntityHeir">
+      <xs:complexContent>
+         <xs:extension base="Entity">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="exposure" type="Exposure"/>
+   <xs:complexType name="Exposure">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="routeCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="exposureLevel" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="exposureModeCode" minOccurs="0" maxOccurs="1" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="financialContract" type="FinancialContract"/>
+   <xs:complexType name="FinancialContract">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="paymentTermsCode" minOccurs="0" maxOccurs="1" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="financialTransaction" type="FinancialTransaction"/>
+   <xs:complexType name="FinancialTransaction">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="amt" minOccurs="0" maxOccurs="1" type="MO"/>
+               <xs:element name="creditExchangeRateQuantity" minOccurs="0" maxOccurs="1" type="REAL"/>
+               <xs:element name="debitExchangeRateQuantity" minOccurs="0" maxOccurs="1" type="REAL"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="infrastructureRoot" type="InfrastructureRoot"/>
+   <xs:complexType name="InfrastructureRoot">
+      <xs:sequence>
+         <xs:element name="realmCode" minOccurs="0" maxOccurs="unbounded" type="CS"/>
+         <xs:element name="typeId" minOccurs="0" maxOccurs="1" type="II"/>
+         <xs:element name="templateId" minOccurs="0" maxOccurs="unbounded" type="II"/>
+      </xs:sequence>
+      <xs:attribute name="oid" type="xs:ID"/>
+      <xs:attribute name="oref" type="xs:IDREF"/>
+      <xs:attribute name="nullFlavor" use="optional" type="NullFlavor"/>
+   </xs:complexType>
+   <xs:element name="invoiceElement" type="InvoiceElement"/>
+   <xs:complexType name="InvoiceElement">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="modifierCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="unitQuantity" minOccurs="0" maxOccurs="1" type="RTO_PQ_PQ"/>
+               <xs:element name="unitPriceAmt" minOccurs="0" maxOccurs="1" type="RTO_MO_PQ"/>
+               <xs:element name="netAmt" minOccurs="0" maxOccurs="1" type="MO"/>
+               <xs:element name="factorNumber" minOccurs="0" maxOccurs="1" type="REAL"/>
+               <xs:element name="pointsNumber" minOccurs="0" maxOccurs="1" type="REAL"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="languageCommunication" type="LanguageCommunication"/>
+   <xs:complexType name="LanguageCommunication">
+      <xs:complexContent>
+         <xs:extension base="InfrastructureRoot">
+            <xs:sequence>
+               <xs:element name="languageCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="modeCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="proficiencyLevelCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="preferenceInd" minOccurs="0" maxOccurs="1" type="BL"/>
+               <xs:element name="entity" type="Entity" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="licensedEntity" type="LicensedEntity"/>
+   <xs:complexType name="LicensedEntity">
+      <xs:complexContent>
+         <xs:extension base="Role">
+            <xs:sequence>
+               <xs:element name="recertificationTime" minOccurs="0" maxOccurs="1" type="TS"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="livingSubject" type="LivingSubject"/>
+   <xs:complexType name="LivingSubject">
+      <xs:complexContent>
+         <xs:extension base="Entity">
+            <xs:sequence>
+               <xs:element name="administrativeGenderCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="birthTime" minOccurs="0" maxOccurs="1" type="TS"/>
+               <xs:element name="deceasedInd" minOccurs="0" maxOccurs="1" type="BL"/>
+               <xs:element name="deceasedTime" minOccurs="0" maxOccurs="1" type="TS"/>
+               <xs:element name="multipleBirthInd" minOccurs="0" maxOccurs="1" type="BL"/>
+               <xs:element name="multipleBirthOrderNumber" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="organDonorInd" minOccurs="0" maxOccurs="1" type="BL"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="managedParticipation" type="ManagedParticipation"/>
+   <xs:complexType name="ManagedParticipation">
+      <xs:complexContent>
+         <xs:extension base="Participation">
+            <xs:sequence>
+               <xs:element name="id" minOccurs="0" maxOccurs="unbounded" type="II"/>
+               <xs:element name="statusCode" minOccurs="0" maxOccurs="1" type="CS"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="manufacturedMaterial" type="ManufacturedMaterial"/>
+   <xs:complexType name="ManufacturedMaterial">
+      <xs:complexContent>
+         <xs:extension base="Material">
+            <xs:sequence>
+               <xs:element name="lotNumberText" minOccurs="0" maxOccurs="1" type="ST"/>
+               <xs:element name="expirationTime" minOccurs="0" maxOccurs="1" type="IVL_TS"/>
+               <xs:element name="stabilityTime" minOccurs="0" maxOccurs="1" type="IVL_TS"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="material" type="Material"/>
+   <xs:complexType name="Material">
+      <xs:complexContent>
+         <xs:extension base="Entity">
+            <xs:sequence>
+               <xs:element name="formCode" minOccurs="0" maxOccurs="1" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="nonPersonLivingSubject" type="NonPersonLivingSubject"/>
+   <xs:complexType name="NonPersonLivingSubject">
+      <xs:complexContent>
+         <xs:extension base="LivingSubject">
+            <xs:sequence>
+               <xs:element name="strainText" minOccurs="0" maxOccurs="1" type="ED"/>
+               <xs:element name="genderStatusCode" minOccurs="0" maxOccurs="1" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="observation" type="Observation"/>
+   <xs:complexType name="Observation">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="value" minOccurs="0" maxOccurs="unbounded" type="ANY"/>
+               <xs:element name="valueNegationInd" minOccurs="0" maxOccurs="1" type="BL"/>
+               <xs:element name="interpretationCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="methodCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="targetSiteCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="organization" type="Organization"/>
+   <xs:complexType name="Organization">
+      <xs:complexContent>
+         <xs:extension base="Entity">
+            <xs:sequence>
+               <xs:element name="addr" minOccurs="0" maxOccurs="unbounded" type="AD"/>
+               <xs:element name="standardIndustryClassCode" minOccurs="0" maxOccurs="1" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="parameter" type="Parameter"/>
+   <xs:complexType name="Parameter">
+      <xs:complexContent>
+         <xs:extension base="InfrastructureRoot">
+            <xs:sequence>
+               <xs:element name="id" minOccurs="0" maxOccurs="1" type="II"/>
+               <xs:element name="parameterList" type="ParameterList" minOccurs="0" maxOccurs="1"/>
+               <xs:element name="queryByParameter" type="QueryByParameter" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="parameterItem" type="ParameterItem"/>
+   <xs:complexType name="ParameterItem">
+      <xs:complexContent>
+         <xs:extension base="Parameter">
+            <xs:sequence>
+               <xs:element name="value" minOccurs="0" maxOccurs="unbounded" type="ANY"/>
+               <xs:element name="semanticsText" minOccurs="1" maxOccurs="1" type="SC"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="parameterList" type="ParameterList"/>
+   <xs:complexType name="ParameterList">
+      <xs:complexContent>
+         <xs:extension base="Parameter">
+            <xs:sequence>
+               <xs:element name="parameter" type="Parameter" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="participation" type="Participation"/>
+   <xs:complexType name="Participation">
+      <xs:complexContent>
+         <xs:extension base="InfrastructureRoot">
+            <xs:sequence>
+               <xs:element name="functionCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="sequenceNumber" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="priorityNumber" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="noteText" minOccurs="0" maxOccurs="1" type="ED"/>
+               <xs:element name="time" minOccurs="0" maxOccurs="1" type="IVL_TS"/>
+               <xs:element name="modeCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="awarenessCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="signatureCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="signatureText" minOccurs="0" maxOccurs="1" type="ED"/>
+               <xs:element name="performInd" minOccurs="0" maxOccurs="1" type="BL"/>
+               <xs:element name="substitutionConditionCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="subsetCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="quantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="act" type="Act" minOccurs="0" maxOccurs="1"/>
+               <xs:element name="role" type="Role" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="typeCode" use="optional" type="ParticipationType"/>
+            <xs:attribute name="contextControlCode" use="optional" type="ContextControl"/>
+            <xs:attribute name="negationInd" use="optional" type="bl"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="patient" type="Patient"/>
+   <xs:complexType name="Patient">
+      <xs:complexContent>
+         <xs:extension base="Role">
+            <xs:sequence>
+               <xs:element name="veryImportantPersonCode" minOccurs="0" maxOccurs="1" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="patientEncounter" type="PatientEncounter"/>
+   <xs:complexType name="PatientEncounter">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="admissionReferralSourceCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="lengthOfStayQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="dischargeDispositionCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="preAdmitTestInd" minOccurs="0" maxOccurs="1" type="BL"/>
+               <xs:element name="specialCourtesiesCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="specialArrangementCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="person" type="Person"/>
+   <xs:complexType name="Person">
+      <xs:complexContent>
+         <xs:extension base="LivingSubject">
+            <xs:sequence>
+               <xs:element name="addr" minOccurs="0" maxOccurs="unbounded" type="AD"/>
+               <xs:element name="maritalStatusCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="educationLevelCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="disabilityCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="livingArrangementCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="religiousAffiliationCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="raceCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="ethnicGroupCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="place" type="Place"/>
+   <xs:complexType name="Place">
+      <xs:complexContent>
+         <xs:extension base="Entity">
+            <xs:sequence>
+               <xs:element name="mobileInd" minOccurs="0" maxOccurs="1" type="BL"/>
+               <xs:element name="addr" minOccurs="0" maxOccurs="1" type="AD"/>
+               <xs:element name="directionsText" minOccurs="0" maxOccurs="1" type="ED"/>
+               <xs:element name="positionText" minOccurs="0" maxOccurs="1" type="ED"/>
+               <xs:element name="gpsText" minOccurs="0" maxOccurs="1" type="ST"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="procedure" type="Procedure"/>
+   <xs:complexType name="Procedure">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="methodCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="approachSiteCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+               <xs:element name="targetSiteCode" minOccurs="0" maxOccurs="unbounded" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="publicHealthCase" type="PublicHealthCase"/>
+   <xs:complexType name="PublicHealthCase">
+      <xs:complexContent>
+         <xs:extension base="Observation">
+            <xs:sequence>
+               <xs:element name="detectionMethodCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="transmissionModeCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="diseaseImportedCode" minOccurs="0" maxOccurs="1" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="qualifiedEntity" type="QualifiedEntity"/>
+   <xs:complexType name="QualifiedEntity">
+      <xs:complexContent>
+         <xs:extension base="Role">
+            <xs:sequence>
+               <xs:element name="equivalenceInd" minOccurs="0" maxOccurs="1" type="BL"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="queryAck" type="QueryAck"/>
+   <xs:complexType name="QueryAck">
+      <xs:complexContent>
+         <xs:extension base="QueryEvent">
+            <xs:sequence>
+               <xs:element name="queryResponseCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="resultTotalQuantity" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="resultCurrentQuantity" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="resultRemainingQuantity" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="continuationToken" minOccurs="0" maxOccurs="1" type="ST"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="queryByParameter" type="QueryByParameter"/>
+   <xs:complexType name="QueryByParameter">
+      <xs:complexContent>
+         <xs:extension base="QuerySpec">
+            <xs:sequence>
+               <xs:element name="parameter" type="Parameter" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="queryContinuation" type="QueryContinuation"/>
+   <xs:complexType name="QueryContinuation">
+      <xs:complexContent>
+         <xs:extension base="QueryEvent">
+            <xs:sequence>
+               <xs:element name="startResultNumber" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="continuationQuantity" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="continuationToken" minOccurs="0" maxOccurs="1" type="ST"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="queryEvent" type="QueryEvent"/>
+   <xs:complexType name="QueryEvent">
+      <xs:complexContent>
+         <xs:extension base="InfrastructureRoot">
+            <xs:sequence>
+               <xs:element name="queryId" minOccurs="0" maxOccurs="1" type="II"/>
+               <xs:element name="statusCode" minOccurs="0" maxOccurs="1" type="CS"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="querySpec" type="QuerySpec"/>
+   <xs:complexType name="QuerySpec">
+      <xs:complexContent>
+         <xs:extension base="QueryEvent">
+            <xs:sequence>
+               <xs:element name="modifyCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="responseElementGroupId" minOccurs="0" maxOccurs="unbounded" type="II"/>
+               <xs:element name="responseModalityCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="responsePriorityCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="initialQuantity" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="initialQuantityCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="executionAndDeliveryTime" minOccurs="0" maxOccurs="1" type="TS"/>
+               <xs:element name="sortControl" type="SortControl" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="role" type="Role"/>
+   <xs:complexType name="Role">
+      <xs:complexContent>
+         <xs:extension base="InfrastructureRoot">
+            <xs:sequence>
+               <xs:element name="id" minOccurs="0" maxOccurs="unbounded" type="II"/>
+               <xs:element name="code" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="name" minOccurs="0" maxOccurs="unbounded" type="EN"/>
+               <xs:element name="addr" minOccurs="0" maxOccurs="unbounded" type="AD"/>
+               <xs:element name="telecom" minOccurs="0" maxOccurs="unbounded" type="TEL"/>
+               <xs:element name="statusCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="effectiveTime" minOccurs="0" maxOccurs="1" type="SXCM_TS"/>
+               <xs:element name="certificateText" minOccurs="0" maxOccurs="unbounded" type="ED"/>
+               <xs:element name="confidentialityCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="quantity" minOccurs="0" maxOccurs="1" type="RTO"/>
+               <xs:element name="priorityNumber" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="positionNumber" minOccurs="0" maxOccurs="unbounded" type="INT"/>
+               <xs:element name="player" type="Entity" minOccurs="0" maxOccurs="1"/>
+               <xs:element name="scoper" type="Entity" minOccurs="0" maxOccurs="1"/>
+               <xs:element name="participation" type="Participation" minOccurs="0" maxOccurs="unbounded"/>
+               <xs:element name="outboundLink" type="RoleLink" minOccurs="0" maxOccurs="unbounded"/>
+               <xs:element name="inboundLink" type="RoleLink" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <!----><xs:attribute name="classCode" use="optional" type="RoleClass"/>
+            <xs:attribute name="negationInd" use="optional" type="bl"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="roleHeir" type="RoleHeir"/>
+   <xs:complexType name="RoleHeir">
+      <xs:complexContent>
+         <xs:extension base="Role">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="roleLink" type="RoleLink"/>
+   <xs:complexType name="RoleLink">
+      <xs:complexContent>
+         <xs:extension base="InfrastructureRoot">
+            <xs:sequence>
+               <xs:element name="id" minOccurs="0" maxOccurs="unbounded" type="II"/>
+               <xs:element name="statusCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="priorityNumber" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="effectiveTime" minOccurs="0" maxOccurs="1" type="IVL_TS"/>
+               <xs:element name="source" type="Role" minOccurs="0" maxOccurs="1"/>
+               <xs:element name="target" type="Role" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="typeCode" use="optional" type="RoleLinkType"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="sortControl" type="SortControl"/>
+   <xs:complexType name="SortControl">
+      <xs:complexContent>
+         <xs:extension base="InfrastructureRoot">
+            <xs:sequence>
+               <xs:element name="sequenceNumber" minOccurs="0" maxOccurs="1" type="INT"/>
+               <xs:element name="elementName" minOccurs="0" maxOccurs="1" type="SC"/>
+               <xs:element name="directionCode" minOccurs="0" maxOccurs="1" type="CS"/>
+               <xs:element name="querySpec" type="QuerySpec" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="substanceAdministration" type="SubstanceAdministration"/>
+   <xs:complexType name="SubstanceAdministration">
+      <xs:complexContent>
+         <xs:extension base="Procedure">
+            <xs:sequence>
+               <xs:element name="routeCode" minOccurs="0" maxOccurs="1" type="CD"/>
+               <xs:element name="doseQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="rateQuantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="doseCheckQuantity" minOccurs="0" maxOccurs="unbounded" type="RTO"/>
+               <xs:element name="maxDoseQuantity" minOccurs="0" maxOccurs="unbounded" type="RTO"/>
+               <xs:element name="administrationUnitCode" minOccurs="0" maxOccurs="1" type="CD"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="supply" type="Supply"/>
+   <xs:complexType name="Supply">
+      <xs:complexContent>
+         <xs:extension base="Act">
+            <xs:sequence>
+               <xs:element name="quantity" minOccurs="0" maxOccurs="1" type="PQ"/>
+               <xs:element name="expectedUseTime" minOccurs="0" maxOccurs="1" type="IVL_TS"/>
+            </xs:sequence>
+            <!----></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+</xs:schema>

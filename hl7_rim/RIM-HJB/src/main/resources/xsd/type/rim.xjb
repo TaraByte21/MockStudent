@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns="http://java.sun.com/xml/ns/jaxb" xmlns:annox="http://annox.dev.java.net"
+               xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance"
+               xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+               version="2.1">
+   <jaxb:bindings node="/xs:schema" schemaLocation="rim.xsd">
+
+      <jaxb:bindings node="//xs:complexType[@name='InfrastructureRoot']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement"
+                            name="infrastructureRoot"/>
+         </annox:annotate>
+         <jaxb:bindings node="//xs:complexType[ @name='InfrastructureRoot' ]">
+            <inheritance:extends>org.hl7.v3.AbstractRoot</inheritance:extends>
+         </jaxb:bindings>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+
+      <jaxb:bindings node="//xs:complexType[@name='Act']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="act"/>
+         </annox:annotate>
+         <!--jaxb:bindings node="//xs:complexType[ @name='Act' ]//xs:element[ @name='outboundRelationship' ]">
+            <jaxb:property collectionType="org.hl7.v3.IndexedActRelationshipList"/>
+         </jaxb:bindings>
+         <jaxb:bindings node="//xs:complexType[ @name='Act' ]//xs:element[ @name='inboundRelationship' ]">
+            <jaxb:property collectionType="org.hl7.v3.IndexedActRelationshipList"/>
+         </jaxb:bindings-->
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+
+      <jaxb:bindings node="//xs:complexType[@name='ActRelationship']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+         <jaxb:bindings node=".//xs:element[@name='source']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+         <jaxb:bindings node=".//xs:element[@name='target']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+      </jaxb:bindings>
+
+      <jaxb:bindings node="//xs:complexType[@name='Entity']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="entity"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+         <jaxb:bindings node=".//xs:element[@name='playedRole']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+         <jaxb:bindings node=".//xs:element[@name='scopedRole']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+      </jaxb:bindings>
+
+      <jaxb:bindings node="//xs:complexType[@name='Participation']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="participation"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+         <jaxb:bindings node=".//xs:element[@name='act']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+         <jaxb:bindings node=".//xs:element[@name='role']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+      </jaxb:bindings>
+
+
+      <jaxb:bindings node="//xs:complexType[@name='Role']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="role"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+         <jaxb:bindings node=".//xs:element[@name='player']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+         <jaxb:bindings node=".//xs:element[@name='scoper']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+         <jaxb:bindings node=".//xs:element[@name='outboundLink']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+         <jaxb:bindings node=".//xs:element[@name='inboundLink']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+      </jaxb:bindings>
+
+
+
+      <jaxb:bindings node="//xs:complexType[@name='Access']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Account']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='ActHeir']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Container']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='ContextStructure']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="contextStructure"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Device']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='DeviceTask']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='DiagnosticImage']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Diet']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Document']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Employee']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='EntityHeir']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Exposure']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='FinancialContract']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='FinancialTransaction']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='InvoiceElement']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='LanguageCommunication']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+         <jaxb:bindings node=".//xs:element[@name='entity']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='LicensedEntity']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='LivingSubject']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="livingSubject"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='ManagedParticipation']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='ManufacturedMaterial']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement"
+                            name="manufacturedMaterial"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Material']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="material"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='NonPersonLivingSubject']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Observation']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="observation"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Organization']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Parameter']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="parameter"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='ParameterItem']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='ParameterList']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+         <jaxb:bindings node=".//xs:element[@name='parameter']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Patient']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='PatientEncounter']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Person']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Place']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Procedure']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="procedure"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='PublicHealthCase']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='QualifiedEntity']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='QueryAck']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='QueryByParameter']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+         <jaxb:bindings node=".//xs:element[@name='parameter']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='QueryContinuation']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='QueryEvent']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="queryEvent"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='QuerySpec']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="querySpec"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+
+      <jaxb:bindings node="//xs:complexType[@name='RoleHeir']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='RoleLink']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+         <jaxb:bindings node=".//xs:element[@name='source']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+         <jaxb:bindings node=".//xs:element[@name='target']">
+            <annox:annotate target="field">
+               <annox:annotate annox:class="javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter"
+                               value="edu.asu.bmi.cad.SerializationHelper"/>
+            </annox:annotate>
+         </jaxb:bindings>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='SortControl']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='SubstanceAdministration']">
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+      <jaxb:bindings node="//xs:complexType[@name='Supply']">
+         <annox:annotate>
+            <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="supply"/>
+         </annox:annotate>
+         <equals:ignored xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"/>
+         <hashcode:ignored xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"/>
+      </jaxb:bindings>
+   </jaxb:bindings>
+</jaxb:bindings>

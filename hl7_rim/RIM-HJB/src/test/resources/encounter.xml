@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<patientEncounter xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" classCode="ACT" moodCode="EVN"
+                  xmlns="urn:hl7-org:v3">
+    <id root="1.2.3.99.100.1" extension="100_6955844_4098" assigningAuthorityName="Mayo" scope="OBJ"
+        reliability="VRF"/>
+    <effectiveTime value="04092014060000"/>
+    <participation>
+        <role  xsi:type="Role" classCode="PAT">
+            <code code="amalga/Patient/6955844" codeSystem="1.2.3.99.100.11"/>
+        </role>
+    </participation>
+    <participation typeCode="PRF">
+        <role xsi:type="Role" classCode="SAME">
+            <code code="amalga/Practitioner/016639" codeSystem="1.2.3.99.100.12"/>
+            <name>
+                <family value="DE MARTINO, RANDALL R,  "/>
+            </name>
+        </role>
+    </participation>
+    <participation typeCode="LOC">
+        <time value="04092014060000"/>
+    </participation>
+    <outboundRelationship typeCode="COMP">
+        <target xsi:type="Act" classCode="ENC" moodCode="EVN">
+            <code code="R" codeSystem="1.2.3.99.100.13"/>
+            <effectiveTime value="04092014060000"/>
+        </target>
+    </outboundRelationship>
+    <lengthOfStayQuantity value="0"/>
+    <dischargeDispositionCode code="A" codeSystem="1.2.3.99.100.10"/>
+</patientEncounter>

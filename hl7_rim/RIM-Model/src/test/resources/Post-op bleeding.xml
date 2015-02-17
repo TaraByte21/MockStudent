@@ -1,0 +1,806 @@
+<act classCode="ACT" moodeCode="DEF" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<code code="X001" codeSystem="1.2.3.99.100.1" displayName="Post-Operative Bleeding Management Pathway"/>
+	<outboundRelationship typeCode="RSON">
+		<!-- reason for using this pathway is the medical problem of postoperative bleeding -->
+		<observation classCode="OBS" moodCode="EVN.CRT">
+			<code code="44100-6" codeSystem="2.16.840.1.113883.6.1" displayName="medical problem"/>
+			<value xsi:type="CE" code="110265006" codeSystem="2.16.840.1.113883.6.96" displayName="postoperative bleeding"/>
+			<!-- which is the risk of our abdominal or pelvic surgeries -->
+			<inboundRelationship typeCode="RISK">
+				<procedure classCode="PROC" moodCode="DEF">
+					<code code="PC033" displayName="abdominal or pelvic surgery" codeSystem="1.2.3.99.100.9"/>
+				</procedure>
+			</inboundRelationship>
+			<!-- and which has the following manifestations, i.e., they are suggestive of the issue -->
+			<outboundRelationship typeCode="MFST">
+				<!-- conjunctionCode code="OR" conjunction code on MFST is really not required, because each finding
+						 manifests the condition independently. If there was an AND situation, we describe the finding
+						 with relationship types that imply AND, such as PRCN -->
+				<!-- Criterion 1: frank bloody drainage from the abdominal or pelvic drains with any hemoglobin value-->
+				<!-- one manifestation is the frank bloody abdominal or pelvic drainage -->
+				<observation classCode="OBS" moodCode="EVN">
+					<code code="39115-1" codeSystem="2.16.840.1.113883.6.1" displayName="drainage description of wound, narrative"/>
+					<targetSiteCode code="416949008"  codeSystem="2.16.840.1.113883.6.96" displayName="abdomen and/or pelvis structure"/>
+					<value code="01" codeSystem="1.2.3.99.100.3" displayName="frank bloody (finding)"/>
+				</observation>
+			</outboundRelationship>
+			<outboundRelationship typeCode="MFST">
+				<!-- Criterion 2: 3 or more grams drop in hemoglobin from the pre-op value 
+						 This is a derived observation which requires a reference Hb value and a current Hb value.
+						 The effectiveTime becomes that of the current Hb value.
+				-->
+				<observation classCode="OBS" moodCode="EVN.CRT">
+					<code code="02" codeSystyem="1.2.3.99.100.3" displayName="hemoglobin mass concentration change"/>
+					<value xsi:type="IVL_PQ">
+						<high value="-3" unit="g/dL" inclusive="true"/>
+					</value>
+					<outboundRelationship typeCode="INST">
+						<!-- since this is no primitive lab observation, let's define it: -->
+						<observation classCode="OBS" moodCode="EVN.CRT">
+							<code code="02" codeSystyem="1.2.3.99.100.3" displayName="hemoglobin mass concentration change"/>
+							<value xsi:type="EXPR_PQ">
+								<expression mediaType="application/javascript">currentHb.value.minus(baselineHb.value)</expression>
+							</value>
+							<outboundRelationship typeCode="DRIV">
+								<subsetCode code="LAST"/>
+								<localVariableName>currentHb</localVariableName>
+								<observation classCode="OBS" moodCode="DEF">
+									<code code="718-7" codeSystem="2.16.840.1.113883.6.1" displayName="hemoglobin [mass/volume] in blood"/>
+								</observation>
+							</outboundRelationship>
+							<outboundRelationship typeCode="DRIV">
+								<subsetCode code="LAST"/>
+								<pauseQty value="24" unit="h"><!-- this is an attempt to find a baseline, let's say the last one 24 hours ago? we can't just get the previous one, as we would miss gradual step-downs --></pauseQty>
+								<localVariableName>baselineHb</localVariableName>
+								<observation classCode="OBS" moodCode="DEF">
+									<code code="718-7" codeSystem="2.16.840.1.113883.6.1" displayName="hemoglobin [mass/volume] in blood"/>
+								</observation>
+							</outboundRelationship>
+						</observation>
+					</outboundRelationship>
+				</observation>
+			</outboundRelationship>
+			<outboundRelationship typeCode="MFST">
+				<!-- Criterion 2bis: alternatively Hgb < 8 g/dL -->
+				<observation classCode="OBS" moodCode="EVN.CRT">
+					<code code="718-7" codeSystem="2.16.840.1.113883.6.1" displayName="hemoglobin [mass/volume] in blood"/>
+					<value xsi:type="IVL_PQ">
+						<high value="8" unit="g/dL" inclusive="true"/>
+					</value>
+				</observation>
+			</outboundRelationship>
+			<outboundRelationship typeCode="MFST">
+				<!-- Criterion 3: hemodynamic symptoms concerning for bleeding, 
+						 i.e., tachycardia, oliguria, hypotension, new or worsening abdominal pain
+						 1. tachycardia -->
+				<observation classCode="OBS" moodCode="EVN.CRT">
+					<code code="44100-6" codeSystem="2.16.840.1.113883.6.1" displayName="medical problem"/>
+					<value xsi:type="CE" code="3424008" codeSystem="2.16.840.1.113883.6.96" displayName="tachycardia (finding)"/>
+					<outboundRelationship typeCode="MFST">
+						<observation classCode="OBS" moodCode="EVN.CRT">
+							<code code="8867-4" codeSystem="2.16.840.1.113883.6.1" displayName="heart rate"/> 
+							<value xsi:type="IVL_PQ">
+								<low value="100" unit="/min"><!-- 100 /min at rest seems plenty, adjust as consultants recommend --></low>
+							</value>
+						</observation>	
+					</outboundRelationship>
+				</observation>
+			</outboundRelationship>
+			<outboundRelationship typeCode="MFST">
+				<!-- Criterion 3: hemodynamic symptoms concerning for bleeding, 
+						 i.e., tachycardia, oliguria, hypotension, new or worsening abdominal pain
+						 2. oliguria -->
+				<observation classCode="OBS" moodCode="EVN.CRT">
+					<code code="44100-6" codeSystem="2.16.840.1.113883.6.1" displayName="medical problem"/>
+					<value xsi:type="CE" code="83128009" codeSystem="2.16.840.1.113883.6.96" displayName="oliguria (finding)"/>
+					<outboundRelationship typeCode="MFST">
+						<observation classCode="OBS" moodCode="EVN.CRT">
+							<code code="X012-3" codeSystem="2.16.840.1.113883.6.1" displayName="fluid output (urine, 1h) per body mass"/> 
+							<value xsi:type="IVL_PQ">
+								<low value="1" unit="ml/h/kg"/>
+							</value>
+							<outboundRelationship typeCode="INST">
+								<!-- define this as urineOutput / bodyMass: -->
+								<observation classCode="OBS" moodCode="DEF">
+									<code code="X012-3" codeSystem="2.16.840.1.113883.6.1" displayName="fluid output (urine, 1h) per body mass"/> 
+									<value xsi:type="EXPT_PQ">
+										<expression mediaType="application/javascript">urineOutput.dividedBy(bodyMass)</expression>
+									</value>
+									<outboundRelationship typeCode="DRIV">
+										<subsetCode code="LAST"/>
+										<localVariableName>urineOutput</localVariableName>
+										<observation moodCode="DEF">
+											<code code="9188-4" codeSystem="2.16.840.1.113883.6.1" displayName="fluid output (urine, 1h)"/> 
+										</observation>
+									</outboundRelationship>
+									<outboundRelationship typeCode="DRIV">
+										<subsetCode code="LAST"/>
+										<localVariableName>bodyMass</localVariableName>
+										<observation moodCode="DEF">
+											<code code="29463-7" codeSystem="2.16.840.1.113883.6.1" displayName="body mass"/> 
+										</observation>
+									</outboundRelationship>
+								</observation>
+							</outboundRelationship>
+						</observation>	
+					</outboundRelationship>
+				</observation>
+			</outboundRelationship>
+			<outboundRelationship typeCode="MFST">
+				<!-- Criterion 3: hemodynamic symptoms concerning for bleeding, 
+						 i.e., tachycardia, oliguria, hypotension, new or worsening abdominal pain
+						 3. hypotension -->
+				<observation classCode="OBS" moodCode="EVN.CRT">
+					<code code="44100-6" codeSystem="2.16.840.1.113883.6.1" displayName="medical problem"/>
+					<value xsi:type="CE" code="45007003" codeSystem="2.16.840.1.113883.6.96" displayName="hypotension (disorder)"/>
+					<outboundRelationship typeCode="MFST">
+						<observation classCode="OBS" moodCode="EVN.CRT">
+							<code code="8480-6" codeSystem="2.16.840.1.113883.6.1" displayName="systolic blood pressure"/>
+							<value xsi:type="IVL_PQ">
+								<low value="90" unit="mm[Hg]"/>
+							</value>
+						</observation>	
+					</outboundRelationship>
+				</observation>
+			</outboundRelationship>
+			<outboundRelationship typeCode="MFST">
+				<!-- Criterion 3: hemodynamic symptoms concerning for bleeding, 
+						 i.e., tachycardia, oliguria, hypotension, new or worsening abdominal pain
+						 4. worsening abdominal pain -->
+				<observation classCode="OBS" moodCode="EVN.CRT">
+					<code code="X0383" codeSystyem="1.2.3.99.100.3" displayName="pain score change"/>
+					<value xsi:type="IVL_PQ">
+						<high value="2"><!-- +2 means increase --></high>
+					</value>
+					<outboundRelationship typeCode="INST">
+						<!-- since this is no primitive clinical observation, let's define it: -->
+						<observation classCode="OBS" moodCode="EVN.CRT">
+							<code code="X0383" codeSystyem="1.2.3.99.100.3" displayName="pain score change"/>
+							<value xsi:type="EXPR_PQ">
+								<expression mediaType="application/javascript">currentPain.value.minus(baselinePain.value)</expression>
+							</value>
+							<outboundRelationship typeCode="DRIV">
+								<subsetCode code="LAST"/>
+								<localVariableName>currentPain</localVariableName>
+								<observation classCode="OBS" moodCode="DEF">
+									<code code="38214-3" codeSystem="2.16.840.1.113883.6.1" displayName="pain severity visual analog score"/>
+								</observation>
+							</outboundRelationship>
+							<outboundRelationship typeCode="DRIV">
+								<subsetCode code="LAST"/>
+								<pauseQty value="4" unit="h"><!-- this is an attempt to find a baseline, let's say 4 hours ago? we can't just get the previous one, as we would miss gradual step-downs --></pauseQty>
+								<localVariableName>baselinePain</localVariableName>
+								<observation classCode="OBS" moodCode="DEF">
+									<code code="38214-3" codeSystem="2.16.840.1.113883.6.1" displayName="pain severity visual analog score"/>
+								</observation>
+							</outboundRelationship>
+						</observation>
+					</outboundRelationship>
+				</observation>
+			</outboundRelationship>
+			<outboundRelationship typeCode="MFST">
+				<!-- Criterion 4: frank hematochezia or significant melena -->
+				<observation classCode="OBS" moodCode="EVN.CRT">
+					<code code="44100-6" codeSystem="2.16.840.1.113883.6.1" displayName="medical problem"/>
+					<!-- note: we put both codes here as a DSET<CE> and either one would match
+							 we do this because these two codes are just about synonymous for all practical purposes -->
+					<value xsi:type="CE" code="405729008" codeSystem="2.16.840.1.113883.6.96" displayName="hematochezia (finding)"/>
+					<value xsi:type="CE" code="2901004" codeSystem="2.16.840.1.113883.6.96" displayName="melena (disorder)"/>
+				</observation>
+			</outboundRelationship>
+			<outboundRelationship typeCode="RPRST"><!-- is-represented-as -->
+				<observation>
+					<code code="44100-6" codeSystem="2.16.840.1.113883.6.1" displayName="medical problem"/>
+					<value xsi:type="CE" code="..." codeSystem="..." displayName="..."><!-- other codes you might find in the record --></value>
+				</observation>				
+			</outboundRelationship>
+			<outboundRelationship typeCode="RPRST"><!-- is-represented-as -->
+				<observation>
+					<code code="44100-6" codeSystem="2.16.840.1.113883.6.1" displayName="medical problem"/>
+					<value xsi:type="CE" code="..." codeSystem="..." displayName="..."><!-- other codes you might find in the record --></value>
+					<!-- how much into the NLP do we want to go here?
+							 - we could define the regex rule here or we are expecting codes? -->
+				</observation>				
+			</outboundRelationship>
+		</observation>
+	</outboundRelationship>
+	<outboundRelationship typeCode="PRCN">
+		<!-- Additional criteria mentioned in mc1156-1224.pdf
+				 "Orders apply to patients 18 years of age or older."
+				 Not sure is that means the entire pathway should be applied only for > 18 years? -->
+		<observation classCode="OBS" moodCode="EVN.CRT">
+			<code code="30525-0" codeSystem="1.2.3.99.100.3" displayName="Age"/>
+			<value xsi:type="IVL_PQ">
+				<low value="18" unit="a" inclusive="true"><!-- apply to patients 18 years of age or older --></low>
+			</value>
+		</observation>
+	</outboundRelationship>
+	<outboundRelationship typeCode="COMP">
+		<!-- Warming blanket if temperature is less than 36.5 degrees Celsius. -->
+		<sequenceNumber value="1"/>
+		<splitCode code="IW"><!-- do it if and when necessary --></splitCode>
+		<joinCode code="K"><!-- stop doing it if we exit this pathway --></joinCode>
+		<procedure classCode="PROC" moodCode="DEF">
+			<code code="PR04" codeSystem="1.2.3.99.100.3" displayName="cover patient with a warming blanket"/>
+			<outboundRelationship typeCode="PRCN">
+				<observation moodCode="EVN.CRT">
+					<code code="8310-5" codeSystem="2.16.840.1.113883.6.1" displayName="body temperature"/>
+					<value xsi:type="IVL_PQ">
+						<high value="36.5" unit="Cel" inclusive="false"/>
+					</value>
+				</observation>
+			</outboundRelationship>
+		</procedure>
+	</outboundRelationship>
+	<outboundRelationship typeCode="COMP">
+		<sequenceNumber value="1"/>
+		<splitCode code="I1"/>
+		<joinCode code="K"/>
+		<observation classCode="OBS" moodCode="DEF">
+			<!-- Vital signs 
+					 1. every 1 hour for 6 hours -->
+			<code code="52481-9" codeSystem="2.16.840.1.113883.6.1" displayName="vital signs (acute)"/>
+			<effectiveTime xsi:type="PIVL_TS">
+				<period value="1" unit="h"/>
+			</effectiveTime>
+			<effectiveTime xsi:type="IVL_TS" operator="A">
+				<width value="6" unit="h"/>
+			</effectiveTime>
+			<!-- 2. then per unit routine unless otherwise ordered. 
+					 - this is not specified as "unit routine" is not part of the special pathway any more 
+					 
+					 I gather that this pathway does not usually take more than 6 hours, because if it did, something would have to be done 
+					 after these 6 hours. -->
+		</observation>
+	</outboundRelationship>
+	<!-- Note: this level of nesting is introduced here to keep 
+			 the warming blanket stuff 
+			 and the vital signs stuff 
+			 separate and parallel to 
+			 the meat of the pathway but ended when the pathway is over.
+			 One might also consider that warming blanket is simply always indicated post-op when temp < 36.5 degree Celsius.
+			 In that case the warming blanket protocol would be altogether separte 
+			 and we would not need to even put it inot the bleed pathway.			
+	-->
+	<outboundRelationship typeCode="COMP">
+		<sequenceNumber value="1"/>
+		<splitCode code="I1"/>
+		<joinCode code="W"><!-- this is the main pathway, wait for it to complete, then end the supporting actions that were started above --></joinCode>
+		<act moodCode="DEF">
+			<outboundRelationship typeCode="COMP">
+				<sequenceNumber value="1"/>
+				<!-- Check Labs stat (Hgb, plt, INR, aPTT, TEG) -->
+				<splitCode code="IW"/>
+				<observation classCode="OBS" moodCode="DEF">
+					<id root="00000000-0000-0000-0000-00000000000b"/>
+					<priorityCode code="S"><!-- STAT --></priorityCode>
+					<outboundRelationship typeCode="COMP">
+						<observation classCode="OBS" moodCode="DEF">
+							<code code="718-7" codeSystem="2.16.840.1.113883.6.1" displayName="hemoglobin [mass/volume] in blood"/>
+						</observation>
+					</outboundRelationship>
+					<outboundRelationship typeCode="COMP">
+						<observation classCode="OBS" moodCode="DEF">
+							<code code="26515-7" codeSystem="2.16.840.1.113883.6.1" displayName="platelets [#/volume] in blood"/>
+						</observation>
+					</outboundRelationship>
+					<outboundRelationship typeCode="COMP">
+						<observation classCode="OBS" moodCode="DEF">
+							<code code="34714-6" codeSystem="2.16.840.1.113883.6.1" displayName="INR in blood by coagulation assay"/>
+						</observation>
+					</outboundRelationship>
+					<outboundRelationship typeCode="COMP">
+						<observation classCode="OBS" moodCode="DEF">
+							<code code="3173-2" codeSystem="2.16.840.1.113883.6.1" displayName="Activated partial thromboplastin time (aPTT) in Blood by Coagulation assay"/>
+						</observation>
+					</outboundRelationship>
+					<outboundRelationship typeCode="COMP">
+						<observation classCode="OBS" moodCode="DEF">
+							<code code="67790-6" codeSystem="2.16.840.1.113883.6.1" displayName="thromboelastography panel"/>
+						</observation>
+					</outboundRelationship>
+				</observation>
+			</outboundRelationship>
+			<outboundRelationship typeCode="COMP">
+				<sequenceNumber value="2"><!-- this step starts when we get the labs completed --></sequenceNumber>
+				<splitCode code="E1"><!-- exclusive split, i.e., force a decision, if ... then ... --></splitCode>
+				<priorityNumber value="1"/>
+				<!-- Branch 1: Unstable, which needs to satisfy the following conditions -->
+				<act code="P101" codeSystem="1.2.3.99.100.1" displayName="Unstable Post-Operative Bleeding Management Pathway">
+					<!-- Design Note:
+							 RSON or PRCN, that is here the question.
+							 use RSON to link to the primary indication, i.e., what condition would bring you to even consider this plan of action.
+							 use PRCN to link to preconditions which you check once you are considering the plan of action.
+							 Other logical differences:
+							 RSON is not a precondition, i.e., you might do something for a different RSON, whereas
+							 PRCN must be fulfilled for you to do this (necessary condition),
+							 this is why RSON is not really a conditional, it is about motivation, not permission vs. prohibition -->
+					<!-- Original description, the conjunctions AND / OR are not fully clear
+							 "SBP<80, HR>130, SBP or HR more than 30% change from baseline, bright red blood in drain, acute abdominal distention"
+							 but we shall assume this is all OR conditions.
+							 Perhaps this has sparked Manali's intuition to use RSON instead of PRCN -->
+					<outboundRelationship typeCode="PRCN">
+						<conjunctionCode code="OR"/>
+						<!-- Condition 1: Systolic Blood Pressure less than 80 -->
+						<observation classCode="OBS" moodCode="EVN.CRT">
+							<!-- REMINDER: 
+									 we use LOINC here for Observation.code 
+									 and SNOMED CT for Observation.value, usually along with code beingf LOINC 44100-6 medical problem -->
+							<code code="8480-6" codeSystem="2.16.840.1.113883.6.1" displayName="systolic blood pressure"/>
+							<value xsi:type="IVL_PQ">
+								<low value="80" unit="mm[Hg]" inclusive="false"/>
+							</value>
+						</observation>
+					</outboundRelationship>
+					<outboundRelationship typeCode="PRCN">
+						<conjunctionCode code="OR"/>
+						<!-- Condition 2: Heart rate greater than 130 -->
+						<observation classCode="OBS" moodCode="EVN.CRT">
+							<code code="8867-4" codeSystem="2.16.840.1.113883.6.1" displayName="heart rate"/> 
+							<value xsi:type="IVL_PQ">
+								<low value="130" unit="/min" inclusive="false"/>
+							</value>
+						</observation>	
+					</outboundRelationship>
+					<outboundRelationship typeCode="PRCN">
+						<conjunctionCode code="OR"/>
+						<!-- Condition 3: Heart rate more than 30% change up from baseline -->
+						<observation classCode="OBS" moodCode="EVN.CRT">
+							<code code="03" codeSystyem="1.2.3.99.100.3" displayName="relative heart rate change"><!--
+								 Note: this should be LOINC, but does not exist in LOINC, 
+								 SNOMED CT seems to have this code 361134000 but one needs to check the semantic type
+								 "Alteration in heart rate (finding)"
+								 this would mean a condition described generically as "altered heart rate"
+								 that is not a good match here. --></code>
+							<value xsi:type="IVL_PQ">
+								<low value="30" unit="%" inclusive="true"/>
+							</value>
+							<outboundRelationship typeCode="INST">
+								<!-- since this is no primitive lab observation, let's define it: -->
+								<observation classCode="OBS" moodCode="EVN.CRT">
+									<code code="03" codeSystyem="1.2.3.99.100.3" displayName="relative heart rate change"/>
+									<value xsi:type="EXPR_PQ">
+										<expression mediaType="application/javascript">currentHR.value.minus(baselineHR.value).dividedBy(baselineHR.value)</expression>
+									</value>
+									<outboundRelationship typeCode="DRIV">
+										<subsetCode code="LAST"/>
+										<localVariableName>currentHR</localVariableName>
+										<observation classCode="OBS" moodCode="DEF">
+											<code code="8867-4" codeSystem="2.16.840.1.113883.6.1" displayName="heart rate"/> 
+										</observation>
+									</outboundRelationship>
+									<outboundRelationship typeCode="DRIV">
+										<subsetCode code="LAST"/>
+										<pauseQty value="4" unit="h"><!-- this is an attempt to find a baseline, let's say the last one 4 hours ago? we can't just get the previous one, as we would miss gradual step-downs --></pauseQty>
+										<localVariableName>baselineHb</localVariableName>
+										<observation classCode="OBS" moodCode="DEF">
+											<code code="8867-4" codeSystem="2.16.840.1.113883.6.1" displayName="heart rate"/> 
+										</observation>
+									</outboundRelationship>
+								</observation>
+							</outboundRelationship>
+						</observation>
+					</outboundRelationship>
+					<outboundRelationship typeCode="PRCN">
+						<conjunctionCode code="OR"/>
+						<!-- Condition 3: decreased systolic blood pressure 30% down from baseline -->
+						<observation classCode="OBS" moodCode="EVN.CRT">
+							<code code="04" codeSystyem="1.2.3.99.100.3" displayName="relative heart rate change"/>
+							<value xsi:type="IVL_PQ">
+								<high value="-30" unit="%" inclusive="true"/>
+							</value>
+							<outboundRelationship typeCode="INST">
+								<!-- since this is no primitive lab observation, let's define it: -->
+								<observation classCode="OBS" moodCode="EVN.CRT">
+									<code code="04" codeSystyem="1.2.3.99.100.3" displayName="relative heart rate change"/>
+									<value xsi:type="EXPR_PQ">
+										<expression mediaType="application/javascript">currentSBP.value.minus(baselineSBP.value).dividedBy(baselineSBP.value)</expression>
+									</value>
+									<outboundRelationship typeCode="DRIV">
+										<subsetCode code="LAST"/>
+										<localVariableName>currentHR</localVariableName>
+										<observation classCode="OBS" moodCode="DEF">
+											<code code="8480-6" codeSystem="2.16.840.1.113883.6.1" displayName="systolic blood pressure"/>
+										</observation>
+									</outboundRelationship>
+									<outboundRelationship typeCode="DRIV">
+										<subsetCode code="LAST"/>
+										<pauseQty value="4" unit="h"><!-- this is an attempt to find a baseline, let's say the last one 4 hours ago? we can't just get the previous one, as we would miss gradual step-downs --></pauseQty>
+										<localVariableName>baselineHb</localVariableName>
+										<observation classCode="OBS" moodCode="DEF">
+											<code code="8480-6" codeSystem="2.16.840.1.113883.6.1" displayName="systolic blood pressure"/>
+										</observation>
+									</outboundRelationship>
+								</observation>
+							</outboundRelationship>
+						</observation>
+					</outboundRelationship>
+					<outboundRelationship typeCode="PRCN">
+						<conjunctionCode code="OR"/>
+						<!-- Condition 4: bright red blood in drain -->
+						<observation classCode="OBS" moodCode="EVN">
+							<code code="39115-1" codeSystem="2.16.840.1.113883.6.1" displayName="drainage description of wound, narrative"/>
+							<targetSiteCode code="416949008"  codeSystem="2.16.840.1.113883.6.96" displayName="abdomen and/or pelvis structure"/>
+							<value code="01a" codeSystem="1.2.3.99.100.3" displayName="bright red bloody (finding)"><!-- may be same as "frank bloody" --></value>
+						</observation>
+					</outboundRelationship>
+					<outboundRelationship typeCode="PRCN">
+						<conjunctionCode code="OR"/>
+						<!-- Condition 5: acute abdominal distention -->
+						<observation classCode="OBS" moodCode="EVN.CRT">
+							<code code="44100-6" codeSystem="2.16.840.1.113883.6.1" displayName="medical problem"/>
+							<value code="60728008" codeSystem="2.16.840.1.113883.6.96" displayName="abdominal distention (finding)"><!-- 
+																																																													 Note: the fact that it ought to be "acute" could be coded with SNOMED qualifier, but what would that help?
+																																																													 The operation meaning of acute should be that it is a new finding that did not exist on the previous day --></value>
+						</observation>
+					</outboundRelationship>
+					<outboundRelationship typeCode="COMP">
+						<procedure classCode="PROC" moodCode="DEF">
+							<code code="74770008" codeSystem="2.16.840.1.113883.6.96" displayName="Exploratory laparotomy (procedure)"/>
+						</procedure>
+					</outboundRelationship>
+				</act> 
+			</outboundRelationship>
+			<outboundRelationship typeCode="COMP">
+				<!-- Branch 2: Stable -->
+				<sequenceNumber value="2"><!-- Note: this is the same "2" as the if ... then ... branch --></sequenceNumber>
+				<splitCode code="E1"><!-- This is the "else" branch of "if ... then ... ", split code E1, means exclusive, if unstable has not caught it, this is the default. --></splitCode>
+				<priorityNumber value="2"><!-- This "2" says we consider this after the if ... then ... branch. --></priorityNumber>
+				<act classCode="ACT" moodCode="DEF">
+					<code code="P201" codeSystem="1.2.3.99.100.1" displayName="Stable Post-Operative Bleeding Management Pathway"/>
+					<!-- now at thus point, the original pathway had two branches for normal and abnormal TEG.
+					     But the only real difference between the two was the use of FFP/PLT/Cryo in case of abnormal TEG.
+							 Therefore we will not do it in 2 branches, we will simply add these other transfusions depending on TEG -->
+					<outboundRelationship typeCode="COMP">
+						<sequenceNumber value="1"/>
+						<act classCode="ACT" moodCode="DEF">
+							<code code="201-1" codeSystem="1.2.3.99.100.3" displayName="Packed red blood cells transfusion protocol"/>
+							<!-- The pRBC transfusion protocol:
+									 pRBC transfusion to keep Hgb >8 
+									 Recheck all labs in  4  hours 
+									 Recheck vitals hourly <==== this has already been said above
+									 to Monitor for signs and symptoms of instability which would prompt OR
+									 <==== this suggest that the instability branch is actually not a branch in the protocol
+									 there are instead 2 protocols and the instable bleeding protocol takes over as soon as the pat. becomes instable
+									 but let's set that aside for the moment.
+									 What it shows is: a precise semantics is neccessary to even describe what should really happen.
+									 
+									 Now let's do it. The Stable TEG normal pathway has 1-4+ cycles of transfusions
+									 if we are not getting results, move to OR as with unstable.
+									 
+									 We do this as one cycle:
+									 0. Transfuse FFP/plt/cryo by TEG results
+									     - FFP - in case we find coagulation factor trouble
+											 - PLT - platelet deficiency
+											 - Cryo - ???
+									 1. administer 1 bag of pRBC
+									 2. recheck Hhb
+									 Repeat if < 8 g/dL
+									 do it maximally 4 times (or should it be 5? 6?)
+											 
+									 then move on to more diagnostics:
+									 **If concerns for intraluminal anastomotic bleed, consider endoscopy
+									 - presumably this would be an intervention to actually stop the bleed.
+									 **If patient remains stable, consider CT scan.  If active blush seen on CT, consider angio
+									 - this is just diagnostics, the pathway leaves the further course of action open.
+									 otherwise: Consider OR
+									 - what are the alternatives?
+											 
+									 The pathway is open at that end.
+							-->
+							<outboundRelationship typeCode="COMP">
+								<sequenceNumber value="1"/>
+								<act classCode="ACT" moodCode="DEF">
+									<code code="201-1-1" codeSystem="1.2.3.99.100.3" displayName="Packed red blood cells transfusion protocol, cycle to repeat 4 times"/>
+									<repeatNumber value="4"/>
+									<outboundRelationship typeCode="PRCN">
+										<!-- "to keep Hgb > 8 g/dL" sounds like a continuous objective, but it's not
+												 it is the exit condition from the loop -->
+										<checkpointCode code="E"><!--  Condition is tested at the end of a repeated service execution. The service is repeated only if the condition is true (DO service WHILE condition). --></checkpointCode>
+										<observation classCode="OBS" moodCode="EVN.CRT">
+											<code code="718-7" codeSystem="2.16.840.1.113883.6.1" displayName="hemoglobin [mass/volume] in blood"/>
+											<value xsi:type="IVL_PQ">
+												<high value="8" unit="g/dL" inclusive="true"/>
+											</value>
+										</observation>
+									</outboundRelationship>
+									<outboundRelationship typeCode="COMP">
+										<sequenceNumber value="1"/>
+										<splitCode code="I1"/>
+										<!-- add FFP based on TEG result -->
+										<substanceAdministration classCode="SBADM" moodCode="DEF">
+											<routeCode code="C38276" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="intravenous"/>
+											<doseQuantity value="1" unit="1"><!-- since the thing infused is the amount in one bag, no other unit necessary --></doseQuantity>
+											<rateQuantity value="10" unit="min"><!-- one bag over how much time 10 min? 15 min? 20 min? --></rateQuantity>
+											<participation typeCode="CSM">
+												<role classCode="CONT">
+													<playerMaterial classCode="MMAT">
+														<code code="E0773V00" codeSystem="2.16.840.1.113883.6.18"><!-- this is ISBT-128 check with Mayo BB for details --></code>
+														<name>thawed fresh frozen plasma, 227 mL</name>
+													</playerMaterial>
+												</role>
+											</participation>
+											<outboudRelationship typeCode="PRCN">
+												<checkpointCode code="B"/>
+												<observation classCode="OBS" moodCode="EVN.CRT">
+													<code code="..." codeSystem="2.16.840.1.113883.6.1" displayName="... by thromboelastography"/>
+													<value><!-- ADD: criteria for FFP to look for from the TEG report --></value>												
+												</observation>
+											</outboudRelationship>											
+										</substanceAdministration>
+									</outboundRelationship>
+									<outboundRelationship typeCode="COMP">
+										<sequenceNumber value="1"/>
+										<splitCode code="I1"/>
+										<!-- add PLT based on TEG result -->
+										<substanceAdministration classCode="SBADM" moodCode="DEF">
+											<routeCode code="C38276" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="intravenous"/>
+											<doseQuantity value="1" unit="1"><!-- since the thing infused is the amount in one bag, no other unit necessary --></doseQuantity>
+											<rateQuantity value="10" unit="min"><!-- one bag over how much time 10 min? 15 min? 20 min? --></rateQuantity>
+											<participation typeCode="CSM">
+												<role classCode="CONT">
+													<playerMaterial classCode="MMAT">
+														<code code="E5151V00" codeSystem="2.16.840.1.113883.6.18"><!-- this is ISBT-128 check with Mayo BB for details --></code>
+														<name>pooled platelets, 300 mL</name>
+													</playerMaterial>
+												</role>
+											</participation>
+											<outboudRelationship typeCode="PRCN">
+												<checkpointCode code="B"/>
+												<observation classCode="OBS" moodCode="EVN.CRT">
+													<code code="..." codeSystem="2.16.840.1.113883.6.1" displayName="... by thromboelastography"/>
+													<value><!-- ADD: criteria for PLT to look for from the TEG report --></value>												
+												</observation>
+											</outboudRelationship>											
+										</substanceAdministration>
+									</outboundRelationship>
+									<outboundRelationship typeCode="COMP">
+										<sequenceNumber value="1"/>
+										<splitCode code="I1"/>
+										<!-- add Cryo based on TEG result -->
+										<substanceAdministration classCode="SBADM" moodCode="DEF">
+											<routeCode code="C38276" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="intravenous"/>
+											<doseQuantity value="1" unit="1"><!-- since the thing infused is the amount in one bag, no other unit necessary --></doseQuantity>
+											<rateQuantity value="10" unit="min"><!-- one bag over how much time 10 min? 15 min? 20 min? --></rateQuantity>
+											<participation typeCode="CSM">
+												<role classCode="CONT">
+													<playerMaterial classCode="MMAT">
+														<code code="E5256V00" codeSystem="2.16.840.1.113883.6.18"><!-- this is ISBT-128 check with Mayo BB for details --></code>
+														<name>thawed cryoprecipitate AHF, 127 mL <!-- not sure about the volumes here --></name>
+													</playerMaterial>
+												</role>
+											</participation>
+											<outboudRelationship typeCode="PRCN">
+												<checkpointCode code="B"/>
+												<observation classCode="OBS" moodCode="EVN.CRT">
+													<code code="..." codeSystem="2.16.840.1.113883.6.1" displayName="... by thromboelastography"/>
+													<value><!-- ADD: criteria for Cryo to look for from the TEG report --></value>												
+												</observation>
+											</outboudRelationship>											
+										</substanceAdministration>
+									</outboundRelationship>
+									<outboundRelationship typeCode="COMP">
+										<sequenceNumber value="1"/>
+										<splitCode code="I1"/>
+										<substanceAdministration classCode="SBADM" moodCode="DEF">
+											<routeCode code="C38276" codeSystem="2.16.840.1.113883.3.26.1.1" displayName="intravenous"/>
+											<doseQuantity value="1" unit="1"><!-- since the thing infused is the amount in one bag, no other unit necessary --></doseQuantity>
+											<rateQuantity value="10" unit="min"><!-- one bag over how much time 10 min? 15 min? 20 min? --></rateQuantity>
+											<participation typeCode="CSM">
+												<role classCode="CONT">
+													<playerMaterial classCode="MMAT">
+														<code code="E0404V00" codeSystem="2.16.840.1.113883.6.18"><!-- this is ISBT-128 check with Mayo BB for details --></code>
+														<name>red blood cells, adenine-saline (AS-5) added, from 500 mL whole blood</name>
+													</playerMaterial>
+												</role>
+											</participation>
+										</substanceAdministration>
+									</outboundRelationship>
+									<outboundRelationship typeCode="COMP">
+										<sequenceNumber value="2"/>
+										<pauseQuantity value="10" unit="min"><!-- let's say we wait 10 min after the bag is in, correct it as needed --></pauseQuantity>
+										<observation classCode="OBS" moodCode="DEF">
+											<code code="718-7" codeSystem="2.16.840.1.113883.6.1" displayName="hemoglobin [mass/volume] in blood"/>
+											<!-- FIXME: should we check all labs immediately now or every 4 hours?
+											     What's the point of doing it every 4 hours if we run these cycles of transfusions 
+													 which should take  much less time than 4 hours? -->
+										</observation>
+									</outboundRelationship>
+									<!-- end of cycle -->
+								</act>
+							</outboundRelationship>
+							<outboundRelationship typeCode="COMP">
+								<!-- Recheck the lab panel in 4 hours
+										 This is done by spawning a detached branch along with the cycles 
+
+                     Again, the question is: why not just do it after each transfusion cycle?
+										 If TEG was normal initially, we can skip re-checking TEG, but here it says "all labs" anyway.
+								-->
+								<sequenceNumber value="1"><!-- same number as the cycles --></sequenceNumber>
+								<splitCode code="I1"><!-- do it in parallel --></splitCode>
+								<joinCode code="D"><!-- detach, i.e., the cycles may end, we still run this in 4 hours from the start --></joinCode>
+								<pauseQuantity value="4" unit="h"><!-- this waits 4 hours from the start of everything --></pauseQuantity>
+								<observation classCode="OBS" moodCode="DEF">
+									<id root="00000000-0000-0000-0000-00000000000b"><!-- this panel has been defined above --></id>
+								</observation>
+							</outboundRelationship>
+						</act>
+						<!-- end of the pRBC transfusion protocol -->
+					</outboundRelationship>
+					<!-- Now comes the question, continued hemorrhage or not? -->
+					<outboundRelationship typeCode="COMP">	
+						<sequenceNumber value="2"/>
+						<!-- Branch: continued hemorrhage? yes -->
+						<splitCode code="E1"/>
+						<priorityNumber value="1"/>
+						<act classCode="ACT" moodCode="DEF">
+							<outboudRelationship typeCode="PRCN">
+								<!-- The "Continued hemorrhage? Yes or No" question is tricky
+										 Are we basing it entirely on the Hgb at this point?
+										 Or are we still observing the original signs? 
+										 Since the other signs are somewhat indirect, and the vital signs are checked anyway and instable is a sprecial case,
+										 I am going to say just Hgb criterion again -->
+								<checkpointCode code="B"/>
+								<observation classCode="OBS" moodCode="EVN.CRT">
+									<code code="718-7" codeSystem="2.16.840.1.113883.6.1" displayName="hemoglobin [mass/volume] in blood"/>
+									<value xsi:type="IVL_PQ">
+										<high value="8" unit="g/dL" inclusive="true"/>
+									</value>
+								</observation>
+							</outboudRelationship>
+							<!-- at this point after sequence numbe 1, we then move on to more diagnostics / interventions
+									 
+									 **If concerns for intraluminal anastomotic bleed, consider endoscopy
+									 - presumably this would be an intervention to actually stop the bleed.
+									 **If patient remains stable, consider CT scan.  If active blush seen on CT, consider angio
+									 - this is just diagnostics, the pathway leaves the further course of action open.
+									 otherwise: Consider OR
+									 - what are the alternatives?
+									 
+									 The pathway is open at that end. -->
+							<outboundRelationship typeCode="COMP">
+								<sequenceNumbe value="1"/>
+								<splitCode code="E1"/>
+								<priorityNumber value="1"/>
+								<procedure classCode="PROC" moodCode="DEF">														
+									<code code="69201005" displayName="Endoscopy of intestine (procedure)" codeSystem="2.16.840.1.113883.6.96"/>
+									<outboundRelationship typeCode="PRCN">
+										<checkpointCode code="B"/>
+										<observation classCode="OBS" moodCode="EVN.CRT">
+											<text>concerns for intraluminal anastomotic bleed?</text>
+											<!-- this is not actionable as written, since we don't know hard facts of what makes these concerns
+													 examples could be: 
+													 - nature of procedure (re-anastomosis)
+													 - blood in intraluminal distal drainage?
+													 - others? -->
+										</observation>
+									</outboundRelationship>
+								</procedure>
+							</outboundRelationship>
+							<!-- not clear how to distinguish the other 2 ideas 
+									 
+									 **If patient remains stable, consider CT scan.  If active blush seen on CT, consider angio
+									 - if patient was not stable, we would switch to unstable protocol anyway, 
+									 - so that is redundant here
+									 - doesn't help us to 
+									 **if more than 4 cycles of pRBC, Consider OR
+									 - we are here now because in 4 cycles we have not seen improvement
+									 - so that does not help us distinguish if CT or OR
+							-->
+							<outboundRelationship typeCode="COMP">
+								<sequenceNumbe value="1"/>
+								<splitCode code="E1"/>
+								<priorityNumber value="2"/>
+								<act classCode="ACT" moodCode="DEF">
+									<outboundRelationship typeCode="COMP">
+										<sequenceNumbe value="1"/>
+										<procedure classCode="PROC" moodCode="DEF">
+											<code code="169070004" displayName="Computed tomography of abdomen (procedure)" codeSystem="2.16.840.1.113883.6.96"/>
+										</procedure>
+									</outboundRelationship>
+									<outboundRelationship typeCode="COMP">
+										<sequenceNumbe value="2"/>
+										<procedure classCode="PROC" moodCode="DEF">
+											<code code="77343006" displayName="Angiography (procedure)" codeSystem="2.16.840.1.113883.6.96"/>
+											<outboundRelationship typeCode="PRCN">
+												<observation classCode="OBS" moodCode="DEF">
+													<text>Active blush seen on CT</text>
+													<!-- this needs to be coded to match whatever the CT findings might be -->
+													     Perhaps some regex would do?
+													
+															 I think it makes sense to put specific regex searches into these very specific conditionals
+															 because here we have the advantage of a lot of context, so we may know exactly what to look for.
+															 
+															 On the other hand, this is not done in writing at that time, but just verbal
+															 so the computer can hardly follow.
+															 We might suggest this textually or ask a quick yes-no question? -->
+												</observation>
+											</outboundRelationship>
+										</procedure>
+									</outboundRelationship>
+								</act>
+							</outboundRelationship>
+							<outboundRelationship typeCode="COMP">
+								<sequenceNumbe value="1"/>
+								<splitCode code="E1"/>
+								<priorityNumber value="3"/>
+								<procedure classCode="PROC" moodCode="DEF">
+									<code code="74770008" codeSystem="2.16.840.1.113883.6.96" displayName="Exploratory laparotomy (procedure)"/>
+								</procedure>
+							</outboundRelationship>
+						</act>
+						<!-- end of continued hemorrhage yes -->
+					</outboundRelationship>
+					<outboundRelationship typeCode="COMP">	
+						<sequenceNumber value="2"/>
+						<splitCode code="E1"/>
+						<priorityNumber value="2"/>
+						<!-- Branch: continued hemorrhage? no
+								 Now we unwind.
+								 
+								 Recheck Hgb every 4 hours for 2 additional checks or until stable and >8 x2 checks
+								 
+								 Reassess all medications.
+								 - Restart prophylactic heparin 24 hours after last stable Hgb.
+								 - Consider restart NSAIDs 24 hours after last stable Hgb.
+								 
+								 The medication restart at this point is given because we have stopped the bleed.
+								 There should be a bleed condition which we would now mark as resolved. 
+								 I.e., no longer active.
+								 But in HL7, the condition IS its management.
+								 This means that the medications would not be given during the management of the issue.
+								 And then reinstated when the management of the issue is over.
+								 So, we do not speak about medications here 
+								 because we are describing for the drugs whether or not they should be suspended 
+								 while we working the bleed condition. 
+								 
+								 For now this means, we just focus on:
+								 
+								 Recheck Hgb 
+								 - every 4 hours 
+								 - for 2 additional checks 
+								 
+								 or until stable <=== what does this mean "or until stable", 
+								 we are not talking about unstable patient here
+								 do we mean stable Hgb? But if so, that is exactly what we assess by 2 additional checks.
+								 
+								 - and >8 x2 checks <== that too is what it means to be stable										 
+								 - "recheck Hgb twice every 4 hours" <=== another repeat of the same idea.
+								 
+								 I think this means simply:
+								 Recheck Hgb 
+								 - every 4 hours 
+								 - for 2 additional checks 
+								 And GOAL Hhb to be > 8 g/dL every time.
+								 
+								 Question is: what if it's dropping again?
+								 Then we would fall over into the "continued hemorrhage" branch.
+								 One can see here that these pretty flowchart "algorithms" really are not fully defined. -->
+						<act classCode="ACT" moodCode="DEF">
+							<outboundRelationship typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<code code="718-7" codeSystem="2.16.840.1.113883.6.1" displayName="hemoglobin [mass/volume] in blood"/>
+									<repeatNumber value="2"/>
+									<effectiveTime xsi:type="PIVL_TS">
+										<period value="4" unit="h"/>
+									</effectiveTime>
+									<outboundRelationship typeCode="GOAL">
+										<observation classCode="OBS" moodCode="GOL">
+											<code code="718-7" codeSystem="2.16.840.1.113883.6.1" displayName="hemoglobin [mass/volume] in blood"/>
+											<value xsi:type="IVL_PQ">
+												<low value="8" unit="g/dL" inclusive="false"/>
+											</value>
+										</observation>
+									</outboundRelationship>
+								</observation>
+							</outboundRelationship>
+						</act>
+						<!-- end of continued hemorrhage no -->
+					</outboundRelationship>
+				</act>
+				<!-- end of stable -->
+			</outboundRelationship>
+		</act>
+		<!-- end of main pathway -->
+	</outboundRelationship>
+</act>

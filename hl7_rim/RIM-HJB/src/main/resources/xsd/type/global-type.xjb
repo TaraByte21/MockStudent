@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns="http://java.sun.com/xml/ns/jaxb" xmlns:annox="http://annox.dev.java.net"
+               xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance"
+               xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:hj="http://hyperjaxb3.jvnet.org/ejb/schemas/customizations"
+               xmlns:ci="http://jaxb.dev.java.net/plugin/code-injector"
+               xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+               xmlns:orm="http://java.sun.com/xml/ns/persistence/orm"
+               jaxb:extensionBindingPrefixes="orm hj annox equals hashCode ci"
+               version="2.1">
+	<jaxb:globalBindings choiceContentProperty="true" localScoping="toplevel" underscoreBinding="asCharInWord"
+                         fixedAttributeAsConstantProperty="true">
+		<xjc:simple/>
+		<jaxb:serializable uid="100000"/>
+	</jaxb:globalBindings>
+
+	<jaxb:bindings schemaLocation="rim.xsd">
+
+		<jaxb:bindings node="//xs:complexType[ @name='InfrastructureRoot' ]" >
+			<annox:annotate>
+				<annox:annotate annox:class="com.fasterxml.jackson.annotation.JsonIdentityInfo" generator="JSONUseExistingOrGenerateIdGenerator" property="@oid"/>
+			</annox:annotate>
+		</jaxb:bindings>
+
+		<jaxb:bindings node="//xs:complexType[ @name='InfrastructureRoot' ]//xs:attribute[ @name='oid' ]" >
+			<hj:id>
+					<orm:generated-value generator="UseExistingOrGenerateIdGenerator" strategy="SEQUENCE" />
+			</hj:id>
+			<annox:annotate>
+				<annox:annotate annox:class="org.hibernate.annotations.GenericGenerator" name="UseExistingOrGenerateIdGenerator" strategy="org.hl7.v3.UseExistingOrGenerateIdGenerator" />
+			</annox:annotate>
+		</jaxb:bindings>
+
+
+	</jaxb:bindings>
+</jaxb:bindings>

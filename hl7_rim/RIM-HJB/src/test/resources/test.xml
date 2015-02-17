@@ -1,0 +1,14 @@
+<act moodCode="DEF" classCode="ACT" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="urn:hl7-org:v3">
+	<code code="X000" codeSystem="1.2.3.99.100.1" displayName="Enhanced Recovery Pathway"/>
+	<outboundRelationship typeCode="COMP">
+		<sequenceNumber value="1"/>
+		<target moodCode="DEF" classCode="ACT" xsi:type="Observation">
+			<code code="X001" codeSystem="1.2.3.99.100.1" displayName="Pre-Operative Preparation"/>
+			<outboundRelationship typeCode="COMP">
+				<splitCode code="I1"/>
+			</outboundRelationship>
+			<value nullFlavor="DER" xsi:type="INT" value="12"/>
+		</target>
+	</outboundRelationship>
+</act>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <uri id="User Entered Import Resolution" name="http://org.hl7.v3/rim/core#" uri="rim-core.owl"/>
+    <uri id="User Entered Import Resolution" name="http://org.hl7.v3/rim/upper#" uri="rim-upper.owl"/>
+    <uri id="User Entered Import Resolution" name="urn:hl7-org:cdsdt:r2/1.0" uri="datatype.owl"/>
+    <uri id="User Entered Import Resolution" name="http://org.hl7.v3/rim#" uri="rim-core.owl"/>
+    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base=""/>
+</catalog>
