@@ -3,35 +3,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>edu.mayo.clinicalmodels</groupId>
+	<groupId>edu.asu.bmi.cad591</groupId>
 	<artifactId>RIM</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>RIM-Model</module>
 		<module>RIM-HJB</module>
-		<!-- TODO Update if ever -->
-		<!--module>RIM-JXB</module -->
 	</modules>
 
 	<name>HL7-RIM</name>
-	<description>An implementation of the HL7 Reference Information Model</description>
-
-	<distributionManagement>
-		<repository>
-			<id>mayo-nexus-bsi</id>
-			<name> Mayo Internal BSI Nexus releases</name>
-			<url>http://nexus.mayo.edu/content/repositories/hsr_bsi/</url>
-		</repository>
-
-		<snapshotRepository>
-			<id>mayo-nexus-bsi</id>
-			<name>Mayo Internal BSI Nexus snapshots</name>
-			<url>http://nexus.mayo.edu/content/repositories/hsr_bsi-snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
-	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -50,11 +31,6 @@
 				<artifactId>xercesImpl</artifactId>
 				<version>2.11.0</version>
 			</dependency>
-			<dependency>
-				<groupId>org.drools</groupId>
-				<artifactId>drools-compiler</artifactId>
-				<version>6.3.0-SNAPSHOT</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -72,43 +48,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>JBoss</id>
-			<url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-		</pluginRepository>
-	</pluginRepositories>
-	
-	<repositories>
-
-		<repository>
-			<id>Mayo Internal</id>
-			<url>http://nexus/content/groups/public/</url>
-		</repository>
-
-		<repository>
-			<id>Mayo Informatics</id>
-			<url>http://informatics.mayo.edu/maven/content/groups/public/</url>
-		</repository>
-
-		<repository>
-			<id>JBoss</id>
-			<url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-		</repository>
-
-		<repository>
-			<id>edu.informatics.maven.snapshot</id>
-			<name>Informatics Maven Snapshot Repository</name>
-			<url>http://informatics.mayo.edu/maven/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-
-	</repositories>
 
 </project>

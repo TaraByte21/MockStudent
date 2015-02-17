@@ -1,3 +1,0 @@
-PatientEncounter vs Encounter, both have classCode ENC
-Role "therapeutic agent" (THER) has class name "manufactured product" which is its parent
-Role "role class partitive" has class name "partofWhole",which is one of its children

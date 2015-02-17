@@ -1,9 +1,0 @@
-Name:Code:Specializes:InboundLinkName:OutboundLinkName
-related:REL::related:relatedTo
-is backup for:BACKUP:REL:backup:backupFor
-has contact:CONT:REL:contactFor:contact
-has direct authority over:DIRAUTH:REL:directAuthority:directAuthorityOver
-Identification:IDENT:REL::
-has indirect authority over:INDAUTH:REL:indirectAuthority:indirectAuthorithyOver
-has part:PART:REL:partOf:part
-replaces:REPL:REL:replacedBy:replacementOf
